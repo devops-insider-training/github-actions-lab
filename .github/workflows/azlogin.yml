@@ -1,25 +1,38 @@
 ---
-name: dummy workflow
+name: terraform pipeline
 
 on:
   workflow_dispatch:
+  
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
-  build:
-    runs-on: self-hosted
+  terraform:
+    name: Azure Login and Terraform
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Azure Login
+      - name: Checkout code
         uses: actions/checkout@v4
+        
+      - name: Azure Login
+        uses: azure/login@v2
         with: 
-          client_id: ae931c7f-ee87-4c07-ba53-932b932390a6
-          client_secret: QJf8Q~WLdLY9RL664Jz110NyjrJ_tYR-uXviwcBN
-          subscription_id: 9bc7655e-39f7-4ff6-befc-6e311ca989fb
-          tenant_id: 3070b1d7-f91c-4dfc-bf29-cf39b6fba6d5
+          creds: |
+            {
+              clientId: ae931c7f-ee87-4c07-ba53-932b932390a6,
+              clientSecret: QJf8Q~WLdLY9RL664Jz110NyjrJ_tYR-uXviwcBN,
+              subscriptionId: 9bc7655e-39f7-4ff6-befc-6e311ca989fb,
+              tenantId: 3070b1d7-f91c-4dfc-bf29-cf39b6fba6d5
+            }
 
-      - name: Run a one-line script
-        run: echo "Hello, world!"
-
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.14.6"
+ 
      # - name: azure login
      #   run: az login --service-principal --username ae931c7f-ee87-4c07-ba53-932b932390a6 --password QJf8Q~WLdLY9RL664Jz110NyjrJ_tYR-uXviwcBN --tenant 3070b1d7-f91c-4dfc-bf29-cf39b6fba6d5
 

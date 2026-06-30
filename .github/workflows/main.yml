@@ -32,3 +32,15 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az account show
+
+      - name: Terraform init
+        uses: terraform init
+
+      - name: Terraform validate
+        uses: terraform validate
+
+      - name: Terraform plan
+        uses: terraform plan
+
+      - name: Terraform apply
+        uses: terraform apply --auto-approve

@@ -19,6 +19,9 @@ jobs:
 
 #Steps
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Azure login
         uses: azure/login@v3
         with:
